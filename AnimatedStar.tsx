@@ -3,10 +3,14 @@ import React, { useState } from 'react';
 import {
   Animated,
   Easing,
+  StyleProp,
   StyleSheet,
   TouchableWithoutFeedback,
   View,
+  ViewStyle,
 } from 'react-native';
+
+type valueType = 0 | 1 | 2 | 3 | 4 | 5;
 
 const Star: React.FC<{
   filled: boolean;
@@ -24,11 +28,13 @@ const Star: React.FC<{
 const AnimatedRating: React.FC<{
   color?: string;
   size?: number;
-  value: 0 | 1 | 2 | 3 | 4 | 5;
+  value: valueType;
   numStars: 5 | 10;
-}> = ({ color = 'magenta', size = 32, value, numStars = 5 }) => {
+  onPress?: (newVal: number) => void;
+  style?: StyleProp<ViewStyle>;
+}> = ({ color = 'magenta', size = 32, value, numStars, onPress, style }) => {
   const stars = [];
-  const [rating, setRating] = useState(value);
+  const [rating, setRating] = useState<valueType>(value);
   const [animation] = useState(new Animated.Value(1));
   const animate = () => {
     Animated.timing(animation, {
@@ -61,7 +67,11 @@ const AnimatedRating: React.FC<{
       <TouchableWithoutFeedback
         key={i}
         onPress={() => {
-          setRating(i), animate();
+          setRating(i);
+          animate();
+          if (onPress) {
+            onPress(i);
+          }
         }}
       >
         <Animated.View
@@ -87,19 +97,14 @@ const AnimatedRating: React.FC<{
     );
   }
   return (
-    <View style={styles.container}>
+    <View style={style}>
       <View style={{ flexDirection: 'row' }}>{stars}</View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  container: {},
 });
 
 export default AnimatedRating;
