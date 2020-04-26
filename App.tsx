@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import AnimatedHeart from './AnimatedHeart';
 import AnimatedStar from './AnimatedStar';
 
-const initialRating = 3;
 export default function App() {
-  const [rating, setRating] = useState(initialRating);
+  const [rating, setRating] = useState(3);
   return (
     <View style={styles.container}>
       <AnimatedStar
         value={rating}
         numStars={5}
-        size={40}
+        size={30}
         onPress={(val) => setRating(val)}
         style={{
           backgroundColor: 'rgba(245, 245, 245, 0.9)',
@@ -20,6 +20,14 @@ export default function App() {
         }}
       />
       <Text>Rating is {rating}</Text>
+      <AnimatedHeart
+        style={{
+          position: 'absolute',
+          bottom: 30,
+          left: 30,
+          // backgroundColor: 'pink',
+        }}
+      />
     </View>
   );
 }
@@ -27,7 +35,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    // backgroundColor: 'blue',
     alignItems: 'center',
     justifyContent: 'center',
   },

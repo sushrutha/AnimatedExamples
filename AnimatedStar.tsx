@@ -10,7 +10,7 @@ import {
   ViewStyle,
 } from 'react-native';
 
-type valueType = 0 | 1 | 2 | 3 | 4 | 5;
+type valueType = number;
 
 const Star: React.FC<{
   filled: boolean;
