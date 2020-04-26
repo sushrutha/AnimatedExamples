@@ -17,36 +17,31 @@ const getRandomNumber = (min: number, max: number): number => {
 };
 
 const getRandomColor = () => {
-  return `rgb(${getRandomNumber(100, 144)}, ${getRandomNumber(
+  return `rgb(${getRandomNumber(10, 244)}, ${getRandomNumber(
     10,
     200,
-  )}, ${getRandomNumber(200, 244)})`;
+  )}, ${getRandomNumber(100, 244)})`;
 };
 
-const animationEndY = Math.ceil(height * 0.7);
+const animationEndY = Math.ceil(height * 1.1);
 const negativeEndY = animationEndY * -1;
 
 const Heart: React.FC = () => (
   <View style={styles.heart}>
-    <AntDesign name='heart' size={35} color={getRandomColor()} />
+    <AntDesign name='heart' size={25} color={getRandomColor()} />
   </View>
 );
 
-const HeartContainer: React.FC = () => {
+const HeartContainer: React.FC<{}> = () => {
   const [position] = useState(new Animated.Value(0));
-  let yAnimation;
   useEffect(() => {
-    yAnimation = position.interpolate({
-      inputRange: [negativeEndY, 0],
-      outputRange: [animationEndY, 0],
-    });
     Animated.timing(position, {
       toValue: negativeEndY,
-      duration: 2000,
+      duration: getRandomNumber(2000, 3000),
       easing: Easing.linear,
       useNativeDriver: true,
     }).start();
-  });
+  }, []);
   const getHeartStyle = () => {
     return {
       transform: [
@@ -60,7 +55,7 @@ const HeartContainer: React.FC = () => {
     <Animated.View
       style={[
         styles.heartContainer,
-        { right: getRandomNumber(10, 50) },
+        { right: getRandomNumber(10, 30), bottom: getRandomNumber(0, 50) },
         getHeartStyle(),
       ]}
     >
@@ -72,9 +67,12 @@ const AnimatedHeart: React.FC<{
   numHearts?: number;
   size?: number;
   style?: StyleProp<ViewStyle>;
-}> = ({ numHearts = 5, size = 35, style }) => {
-  const hearts = Array.from(Array(numHearts).keys());
-
+  done?: () => void;
+}> = ({ numHearts = 50, size = 25, style, done = () => {} }) => {
+  const [hearts] = useState(Array.from(Array(numHearts).keys()));
+  useEffect(() => {
+    setTimeout(done, 3000);
+  }, []);
   return (
     <View style={[style, styles.container]}>
       {hearts.map((i) => (
